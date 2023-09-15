@@ -1,0 +1,587 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>あやめバス内回り時刻表検索アプリ</title>
+<script>
+    var uti_bus_stop = ['新発田営業所（新発田高校前）','新発田駅','新発田病院','ボランティアセンター前','カルチャーセンター入口','緑町','生涯学習センター前','カトリック教会前','新発田市役所前','中町','石川小路','西新発田高校前','新発田城址公園','新発田郵便局前','城北町1丁目','城北町ニュータウン','城北町3丁目','中曽根町1丁目','中曽根町','舟入町','舟入町2丁目','コモタウン','新栄町2丁目','新栄町1丁目','自動車学校前','住吉町','隣保館前','住吉町4丁目','イオンモール','西新発田駅前','住吉町5丁目','御幸町2丁目','御幸町3丁目','大栄町2丁目','リハビリテーション病院前','農業高校前','大栄町','中央町','中央商店街','駅前通','新発田駅','新発田営業所（新発田高校前）'];
+    var jikoku = [
+        ['－','－','－','－','－','－','－','－','－','－','－','－','－','－','－','710','711','712','713','714','715','718','719','720','722','724','725','726','728','734','736','738','740','741','－','－','743','745','746','747','748','754'],
+        ['808','815','816','818','819','821','824','825','827','828','829','832','833','834','835','836','837','838','839','840','842','845','846','847','849','851','852','853','855','901','903','905','907','908','－','－','910','912','913','914','915','921'],
+        ['－','920','921','922','923','924','928','929','931','932','933','935','936','937','938','939','940','941','942','943','944','947','948','949','951','953','954','955','956','1000','－','－','－','－','1003','1006','1008','1009','1010','1011','1012','－'],
+        ['－','1025','1026','1027','1028','1029','1033','1034','1036','1037','1038','－','－','1039','1040','1041','1042','1043','1044','1045','1046','1049','1050','1051','1053','1055','1056','1057','1058','1102','－','－','－','－','1105','1108','1110','1111','1112','1113','1114','－'],
+        ['1034','1040','1041','1043','1044','1046','1049','1050','1052','1053','1054','1057','1058','1059','1100','1101','1102','1103','1104','1105','1107','1112','1113','1114','1116','1118','1119','1120','1122','1128','－','－','－','－','1131','1134','1136','1137','1138','1139','1140','－'],
+        ['－','1145','1146','1148','1149','1151','1154','1155','1157','1158','1159','1202','1203','1204','1205','1206','1207','1208','1209','1210','1212','1217','1218','1219','1221','1223','1224','1225','1227','1233','－','－','－','－','1236','1239','1241','1242','1243','1244','1245','1251'],
+        ['1339','1345','1346','1348','1349','1351','1354','1355','1357','1358','1359','1402','1403','1404','1405','1406','1407','1408','1409','1410','1412','1417','1418','1419','1421','1423','1424','1425','1427','1433','1435','1437','1439','1440','－','－','1442','1443','1444','1445','1446','－'],
+        ['－','1451','1452','1454','1455','1457','1500','1501','1503','1504','1505','1508','1509','1510','1511','1512','1513','1514','1515','1516','1518','1523','1524','1525','1527','1529','1530','1531','1533','1539','1541','1543','1545','1546','－','－','1548','1549','1550','1551','1552','1558'],
+        ['－','1545','1546','1547','1548','1549','1553','1554','1556','1557','1558','－','－','1559','1600','1601','1602','1603','1604','1605','1606','1609','1610','1611','1613','1615','1616','1617','1618','1622','－','－','－','－','1625','1628','1630','1631','1632','1633','1634','－'],
+        ['－','1645','1646','1647','1648','1649','1653','1654','1656','1657','1658','－','－','1659','1700','1701','1702','1703','1704','1705','1706','1709','1710','1711','1713','1715','1716','1717','1718','1722','－','－','－','－','1725','1728','1730','1731','1732','1733','1734','－'],
+        ['1738','1745','1746','1748','1749','1751','1754','1755','1757','1758','1759','－','－','1801','1802','1803','1804','1805','1806','1807','1809','1814','1815','1816','1818','1820','1821','1822','1823','1828','1830','1832','1834','1835','－','－','1837','1838','1839','1840','1841','－'],
+        ['－','1849','1850','1852','1853','1855','1858','1859','1901','1902','1903','－','－','1905','1906','1907','1908','1909','1910','1911','1913','1918','1919','1920','1922','1924','1925','1926','1927','1932','1934','1936','1938','1939','－','－','1941','1942','1943','1944','1945','1951']
+    ];
+    var jikoku_holiday = [
+        ['－','1025','1026','1027','1028','1029','1033','1034','1036','1037','1038','－','－','1039','1040','1041','1042','1043','1044','1045','1046','1049','1050','1051','1053','1055','1056','1057','1058','1102','－','－','－','－','1105','1108','1110','1111','1112','1113','1114','－'],
+        ['1034','1040','1041','1043','1044','1046','1049','1050','1052','1053','1054','1057','1058','1059','1100','1101','1102','1103','1104','1105','1107','1112','1113','1114','1116','1118','1119','1120','1122','1128','－','－','－','－','1131','1134','1136','1137','1138','1139','1140','－'],
+        ['－','1145','1146','1148','1149','1151','1154','1155','1157','1158','1159','1202','1203','1204','1205','1206','1207','1208','1209','1210','1212','1217','1218','1219','1221','1223','1224','1225','1227','1233','－','－','－','－','1236','1239','1241','1242','1243','1244','1245','1251'],
+        ['1339','1345','1346','1348','1349','1351','1354','1355','1357','1358','1359','1402','1403','1404','1405','1406','1407','1408','1409','1410','1412','1417','1418','1419','1421','1423','1424','1425','1427','1433','1435','1437','1439','1440','－','－','1442','1443','1444','1445','1446','－'],
+        ['－','1451','1452','1454','1455','1457','1500','1501','1503','1504','1505','1508','1509','1510','1511','1512','1513','1514','1515','1516','1518','1523','1524','1525','1527','1529','1530','1531','1533','1539','1541','1543','1545','1546','－','－','1548','1549','1550','1551','1552','1558'],
+        ['－','1545','1546','1547','1548','1549','1553','1554','1556','1557','1558','－','－','1559','1600','1601','1602','1603','1604','1605','1606','1609','1610','1611','1613','1615','1616','1617','1618','1622','－','－','－','－','1625','1628','1630','1631','1632','1633','1634','－'],
+        ['1738','1745','1746','1748','1749','1751','1754','1755','1757','1758','1759','－','－','1801','1802','1803','1804','1805','1806','1807','1809','1814','1815','1816','1818','1820','1821','1822','1823','1828','1830','1832','1834','1835','－','－','1837','1838','1839','1840','1841','1847']
+    ];
+    var jikoku_community = [
+        ['－','－','－','－','－','－','－','－','－','－','－','－','－','－','－','710','711','712','713','714','715','718','719','720','722','724','725','726','728','734','736','738','740','741','－','－','743','745','746','747','748','754'],
+        ['808','815','816','818','819','821','824','825','827','828','829','832','833','834','835','836','837','838','839','840','842','845','846','847','849','851','852','853','855','901','903','905','907','908','－','－','910','912','913','914','915','921'],
+        ['－','1025','1026','1027','1028','1029','1033','1034','1036','1037','1038','－','－','1039','1040','1041','1042','1043','1044','1045','1046','1049','1050','1051','1053','1055','1056','1057','1058','1102','－','－','－','－','1105','1108','1110','1111','1112','1113','1114','－'],
+        ['1034','1040','1041','1043','1044','1046','1049','1050','1052','1053','1054','1057','1058','1059','1100','1101','1102','1103','1104','1105','1107','1112','1113','1114','1116','1118','1119','1120','1122','1128','－','－','－','－','1131','1134','1136','1137','1138','1139','1140','－'],
+        ['－','1145','1146','1148','1149','1151','1154','1155','1157','1158','1159','1202','1203','1204','1205','1206','1207','1208','1209','1210','1212','1217','1218','1219','1221','1223','1224','1225','1227','1233','－','－','－','－','1236','1239','1241','1242','1243','1244','1245','1251'],
+        ['1339','1345','1346','1348','1349','1351','1354','1355','1357','1358','1359','1402','1403','1404','1405','1406','1407','1408','1409','1410','1412','1417','1418','1419','1421','1423','1424','1425','1427','1433','1435','1437','1439','1440','－','－','1442','1443','1444','1445','1446','－'],
+        ['－','1451','1452','1454','1455','1457','1500','1501','1503','1504','1505','1508','1509','1510','1511','1512','1513','1514','1515','1516','1518','1523','1524','1525','1527','1529','1530','1531','1533','1539','1541','1543','1545','1546','－','－','1548','1549','1550','1551','1552','1558'],
+        ['－','1545','1546','1547','1548','1549','1553','1554','1556','1557','1558','－','－','1559','1600','1601','1602','1603','1604','1605','1606','1609','1610','1611','1613','1615','1616','1617','1618','1622','－','－','－','－','1625','1628','1630','1631','1632','1633','1634','－'],
+        ['1738','1745','1746','1748','1749','1751','1754','1755','1757','1758','1759','－','－','1801','1802','1803','1804','1805','1806','1807','1809','1814','1815','1816','1818','1820','1821','1822','1823','1828','1830','1832','1834','1835','－','－','1837','1838','1839','1840','1841','－'],
+        ['－','1849','1850','1852','1853','1855','1858','1859','1901','1902','1903','－','－','1905','1906','1907','1908','1909','1910','1911','1913','1918','1919','1920','1922','1924','1925','1926','1927','1932','1934','1936','1938','1939','－','－','1941','1942','1943','1944','1945','1951']
+    ];
+    var jikoku_community_holiday = [
+        ['1034','1040','1041','1043','1044','1046','1049','1050','1052','1053','1054','1057','1058','1059','1100','1101','1102','1103','1104','1105','1107','1112','1113','1114','1116','1118','1119','1120','1122','1128','－','－','－','－','1131','1134','1136','1137','1138','1139','1140','－'],
+        ['－','1145','1146','1148','1149','1151','1154','1155','1157','1158','1159','1202','1203','1204','1205','1206','1207','1208','1209','1210','1212','1217','1218','1219','1221','1223','1224','1225','1227','1233','－','－','－','－','1236','1239','1241','1242','1243','1244','1245','1251'],
+        ['1339','1345','1346','1348','1349','1351','1354','1355','1357','1358','1359','1402','1403','1404','1405','1406','1407','1408','1409','1410','1412','1417','1418','1419','1421','1423','1424','1425','1427','1433','1435','1437','1439','1440','－','－','1442','1443','1444','1445','1446','－'],
+        ['－','1451','1452','1454','1455','1457','1500','1501','1503','1504','1505','1508','1509','1510','1511','1512','1513','1514','1515','1516','1518','1523','1524','1525','1527','1529','1530','1531','1533','1539','1541','1543','1545','1546','－','－','1548','1549','1550','1551','1552','1558'],
+        ['1738','1745','1746','1748','1749','1751','1754','1755','1757','1758','1759','－','－','1801','1802','1803','1804','1805','1806','1807','1809','1814','1815','1816','1818','1820','1821','1822','1823','1828','1830','1832','1834','1835','－','－','1837','1838','1839','1840','1841','1847']
+    ];
+    var syukujitu = ['2023/1/1','2023/1/2','2023/1/9','2023/2/11','2023/2/23','2023/3/21','2023/4/29','2023/5/3','2023/5/4','2023/5/5','2023/7/17','2023/8/11','2023/9/18','2023/9/23','2023/10/9','2023/11/3','2023/11/23','2023/12/31','2024/1/1','2024/1/2','2024/1/8','2024/2/11','2024/2/12','2024/2/23','2024/3/20','2024/4/29','2024/5/3','2024/5/4','2024/5/5','2024/5/6','2024/7/15','2024/8/11','2024/8/12','2024/9/16','2024/9/22','2024/9/23','2024/10/14','2024/11/3','2024/11/4','2024/11/23','2024/12/31'];
+    var community = ['1/1','1/2','1/3','8/13','8/14','8/15','8/16','12/29','12/30','12/31'];
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var date = now.getDate();
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+    function get_selectedtime() {
+        var hour_selected = document.getElementById('hour').value;
+        var minute_selected = document.getElementById('minute').value;
+        let elements = document.getElementsByName('発着');
+        let len = elements.length;
+        let checkValue = '';
+        for (let i = 0; i < len; i++) {
+            if (elements.item(i).checked) {
+                checkValue = elements.item(i).value;
+            }
+        }
+        search(checkValue, hour_selected, minute_selected);
+    }
+    var answer_departure_hour = '';
+    var answer_departure_minute = '';
+    var answer_destination_hour = '';
+    var answer_destination_minute = '';
+    function answer(departure_name, destination_name, departure, destination) {
+        document.getElementById('departure_name').textContent = departure_name;
+        document.getElementById('destination_name').textContent = destination_name;
+        if (departure.length == 3) {
+            document.getElementById('departure_answer').textContent = departure.slice(0,1) + '時' + Number(departure.slice(1,3)) + '分';
+            answer_departure_hour = departure.slice(0,1);
+            answer_departure_minute = departure.slice(1,3);
+        } else if (departure.length == 4) {
+            document.getElementById('departure_answer').textContent = departure.slice(0,2) + '時' + Number(departure.slice(2,4)) + '分';
+            answer_departure_hour = departure.slice(0,2);
+            answer_departure_minute = departure.slice(2,4);
+        }
+        if (destination.length == 3) {
+            document.getElementById('destination_answer').textContent = destination.slice(0,1) + '時' + Number(destination.slice(1,3)) + '分';
+            answer_destination_hour = destination.slice(0,1);
+            answer_destination_minute = destination.slice(1,3);
+        } else if (destination.length == 4) {
+            document.getElementById('destination_answer').textContent = destination.slice(0,2) + '時' + Number(destination.slice(2,4)) + '分';
+            answer_destination_hour = destination.slice(0,2);
+            answer_destination_minute = destination.slice(2,4);
+        }
+        var table = document.getElementById('target');
+        var div = document.getElementById('div');
+        var div_2 = document.getElementById('div_2');
+        table.style.display = 'inline';
+        div.style.display = 'none';
+        div_2.style.display = 'block';
+    }
+    function onemore() {
+        var table = document.getElementById('target');
+        var div = document.getElementById('div');
+        var div_2 = document.getElementById('div_2');
+        table.style.display = 'none';
+        div.style.display = 'block';
+        div_2.style.display = 'none';
+    }
+    function search(checkValue, hour_selected, minute_selected) {
+        var departure = Number(document.getElementById('departure_stop').value);
+        var destination = Number(document.getElementById('destination_stop').value);
+        if (departure > destination) {
+            alert('この方向では検索できません');
+        }
+        if (departure == destination) {
+            alert('同じバス停が選択されています');
+        }
+        var year_selected = document.getElementById('year').value;
+        var month_selected = document.getElementById('month').value;
+        var date_selected = document.getElementById('date').value;
+        var nou_selected = new Date(year_selected,month_selected - 1,date_selected);
+        var dayOfWeek = nou_selected.getDay();
+        var dayOfWeek_japan = ['日','月','火','水','木','金','土'];
+        var hourminute = hour_selected + minute_selected;
+        var holiday = false;
+        var com_holiday = false;
+        if (dayOfWeek == 0 || dayOfWeek == 6) {
+            holiday = true;
+        }
+        for (var i = 0; i < syukujitu.length; i++) {
+            if (syukujitu[i] == year_selected + '/' + month_selected + '/' + date_selected) {
+                holiday = true;
+                break;
+            }
+        }
+        for (var i = 0; i < community.length; i++) {
+            if (community[i] == month_selected + '/' + date_selected) {
+                com_holiday = true;
+                break;
+            }
+        }
+        if (departure < destination) {
+            if (minute_selected.length == 1) {
+                hourminute = hour_selected + 0 + minute_selected;
+            }
+            if (checkValue == '出発') {
+                if (month_selected == 1 && date_selected == 1) {
+                    for (var i = 0; i < jikoku_community_holiday.length; i++) {
+                        if (jikoku_community_holiday[i][departure] != '－' && jikoku_community_holiday[i][destination] != '－') {
+                            if (Number(hourminute) < Number(jikoku_community_holiday[i][departure])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku_community_holiday[i][departure], jikoku_community_holiday[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == jikoku_community_holiday.length - 1) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == jikoku_community_holiday.length - 1) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                } else if (holiday == false && com_holiday == false) {
+                    for (var i = 0; i < jikoku.length; i++) {
+                        if (jikoku[i][departure] != '－' && jikoku[i][destination] != '－') {
+                            if (Number(hourminute) < Number(jikoku[i][departure])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku[i][departure], jikoku[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == jikoku.length - 1) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == jikoku.length - 1) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                } else if (holiday == true) {
+                    for (var i = 0; i < jikoku_holiday.length; i++) {
+                        if (jikoku_holiday[i][departure] != '－' && jikoku_holiday[i][destination] != '－') {
+                            if (Number(hourminute) < Number(jikoku_holiday[i][departure])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku_holiday[i][departure], jikoku_holiday[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == jikoku_holiday.length - 1) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == jikoku_holiday.length - 1) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                } else if (holiday == false && com_holiday == true) {
+                    for (var i = 0; i < jikoku_community.length; i++) {
+                        if (jikoku_community[i][departure] != '－' && jikoku_community[i][destination] != '－') {
+                            if (Number(hourminute) < Number(jikoku_community[i][departure])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku_community[i][departure], jikoku_community[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == jikoku_community.length - 1) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == jikoku_community.length - 1) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                }
+            }
+            if (checkValue == '到着') {
+                if (month_selected == 1 && date_selected == 1) {
+                    for (var i = jikoku_community_holiday.length - 1; i >= 0; i--) {
+                        if (jikoku_community_holiday[i][departure] != '－' && jikoku_community_holiday[i][destination] != '－') {
+                            if (Number(hourminute) > Number(jikoku_community_holiday[i][destination])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku_community_holiday[i][departure], jikoku_community_holiday[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == 0) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == 0) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                } else if (holiday == false && com_holiday == false) {
+                    for (var i = jikoku.length - 1; i >= 0; i--) {
+                        if (jikoku[i][departure] != '－' && jikoku[i][destination] != '－') {
+                            if (Number(hourminute) > Number(jikoku[i][destination])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku[i][departure], jikoku[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == 0) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == 0) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                } else if (holiday == true) {
+                    for (var i = jikoku_holiday.length - 1; i >= 0; i--) {
+                        if (jikoku_holiday[i][departure] != '－' && jikoku_holiday[i][destination] != '－') {
+                            if (Number(hourminute) > Number(jikoku_holiday[i][destination])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku_holiday[i][departure], jikoku_holiday[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == 0) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == 0) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                } else if (holiday == false && com_holiday == true) {
+                    for (var i = jikoku_community.length - 1; i >= 0; i--) {
+                        if (jikoku_community[i][departure] != '－' && jikoku_community[i][destination] != '－') {
+                            if (Number(hourminute) > Number(jikoku_community[i][destination])) {
+                                answer(uti_bus_stop[departure], uti_bus_stop[destination], jikoku_community[i][departure], jikoku_community[i][destination]);
+                                document.getElementById('answer_time').textContent = year_selected + '年' + month_selected + '月' + date_selected + '日' + '(' + dayOfWeek_japan[dayOfWeek] + ')';
+                                waittime();
+                                break;
+                            } else if (i == 0) {
+                                alert('指定したバス停と日時で利用できるバスはありません');
+                                break;
+                            }
+                        } else if (i == 0) {
+                            alert('指定したバス停と日時で利用できるバスはありません');
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function month_change(onload) {
+        var sel = document.getElementById("date");
+        var year = document.getElementById('year').value;
+        var month = document.getElementById('month').value;
+        if (onload == 0) {
+            date = document.getElementById('date').value;
+        }
+        for (var i = 1; i < 32; i++) {
+            sel.remove(0);
+        }
+        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+            for (var i = 1; i < 32; i++) {
+                var select = document.getElementById("date");
+                var option = document.createElement("option");
+                option.text = i;
+                option.value = i;
+                select.appendChild(option);
+                if (onload == 1) {
+                    if (option.value == date) {
+                        option.setAttribute("selected", true);
+                    }
+                }
+                if (onload == 0) {
+                    if (option.value == date) {
+                        option.setAttribute("selected", true);
+                    }
+                }
+            }
+        } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+            for (var i = 1; i < 31; i++) {
+                var select = document.getElementById("date");
+                var option = document.createElement("option");
+                option.text = i;
+                option.value = i;
+                select.appendChild(option);
+                if (onload == 1) {
+                    if (option.value == date) {
+                        option.setAttribute("selected", true);
+                    }
+                }
+                if (onload == 0) {
+                    if (date < 31) {
+                        if (option.value == date) {
+                            option.setAttribute("selected", true);
+                        }
+                    } else {
+                        if (option.value == 30) {
+                            option.setAttribute("selected", true);
+                        }
+                    }
+                }
+            }
+        } else if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+            for (var i = 1; i < 30; i++) {
+                    var select = document.getElementById("date");
+                    var option = document.createElement("option");
+                    option.text = i;
+                    option.value = i;
+                    select.appendChild(option);
+                if (onload == 1) {
+                    if (option.value == date) {
+                        option.setAttribute("selected", true);
+                    }
+                }
+                if (onload == 0) {
+                    if (date < 30) {
+                        if (option.value == date) {
+                            option.setAttribute("selected", true);
+                        }
+                    } else {
+                        if (option.value == 29) {
+                            option.setAttribute("selected", true);
+                        }
+                    }
+                }
+            }
+        } else {
+            for (var i = 1; i < 29; i++) {
+                var select = document.getElementById("date");
+                var option = document.createElement("option");
+                option.text = i;
+                option.value = i;
+                select.appendChild(option);
+                if (onload == 1) {
+                    if (option.value == date) {
+                        option.setAttribute("selected", true);
+                    }
+                }
+                if (onload == 0) {
+                    if (date < 29) {
+                        if (option.value == date) {
+                            option.setAttribute("selected", true);
+                        }
+                    } else {
+                        if (option.value == 28) {
+                            option.setAttribute("selected", true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function waittime() {
+        var hour_waittime = '';
+        var minute_waittime = '';
+        if (answer_departure_minute <= answer_destination_minute) {
+            hour_waittime = answer_destination_hour - answer_departure_hour;
+            minute_waittime = Number(answer_destination_minute) - Number(answer_departure_minute);
+            if (hour_waittime == 0) {
+                document.getElementById('waittime').textContent = '(' + Number(minute_waittime) + '分)';
+            } else if (minute_waittime != 0) {
+                document.getElementById('waittime').textContent = '(' + Number(hour_waittime) + '時間' + Number(minute_waittime) + '分)';
+            } else {
+                document.getElementById('waittime').textContent = '(' + Number(hour_waittime) + '時間)';
+            }
+        } else if (answer_departure_minute > answer_destination_minute){
+            var answer_departure_hour_1 = Number(answer_departure_hour) + 1;
+            var answer_departure_minute_1 = 60 - answer_departure_minute;
+            hour_waittime = answer_destination_hour - answer_departure_hour_1;
+            minute_waittime = Number(answer_departure_minute_1) + Number(answer_destination_minute);
+            if (hour_waittime == 0) {
+                document.getElementById('waittime').textContent = '(' + Number(minute_waittime) + '分)';
+            } else {
+                document.getElementById('waittime').textContent = '(' + Number(hour_waittime) + '時間' + Number(minute_waittime) + '分)';
+            }
+        }
+    }
+    window.onload = function addOption() {
+        for (var i = 0; i < uti_bus_stop.length; i++) {
+            var select = document.getElementById("departure_stop");
+            var option = document.createElement("option");
+            option.text = uti_bus_stop[i];
+            option.value = i;
+            select.appendChild(option);
+        }
+        for (var i = 0; i < uti_bus_stop.length; i++) {
+            var select = document.getElementById("destination_stop");
+            var option = document.createElement("option");
+            option.text = uti_bus_stop[i];
+            option.value = i;
+            select.appendChild(option);
+        }
+        for (var i = year; i < year + 2; i++) {
+            var select = document.getElementById("year");
+            var option = document.createElement("option");
+            option.text = i;
+            option.value = i;
+            select.appendChild(option);
+            if (option.value == year) {
+                option.setAttribute("selected", true);
+            }
+        }
+        for (var i = 1; i < 13; i++) {
+            var select = document.getElementById("month");
+            var option = document.createElement("option");
+            option.text = i;
+            option.value = i;
+            select.appendChild(option);
+            if (option.value == month) {
+                option.setAttribute("selected", true);
+            }
+        }
+        month_change(1);
+        for (var i = 0; i < 24; i++) {
+            var select = document.getElementById("hour");
+            var option = document.createElement("option");
+            option.text = i;
+            option.value = i;
+            select.appendChild(option);
+            if (option.value == hour) {
+                option.setAttribute("selected", true);
+            }
+        }
+        for (var i = 0; i < 60; i++) {
+            var select = document.getElementById("minute");
+            var option = document.createElement("option");
+            option.text = i;
+            option.value = i;
+            select.appendChild(option);
+            if (option.value == minute) {
+                option.setAttribute("selected", true);
+            }
+        }
+    }
+</script>
+<style>
+body {
+    font-family: sans-serif;
+    margin: 0px;
+}
+h1 {
+    background-color: #673b5d;
+    color: #ffffff;
+    font-size: 25px;
+    padding: 4px;
+    padding-top: 7px;
+    margin: 0px;
+}
+button {
+    margin: 15px auto;
+    display: block;
+    font-size: 21px;
+}
+p {
+    font-size: 21px;
+    margin: 21px auto;
+}
+select {
+    font-size: 21px;
+}
+input {
+    margin: 10px;
+    transform: scale(1.75);
+}
+label {
+    font-size: 21px;
+    position: relative;
+    bottom: 2px;
+}
+table {
+    font-size: 21px;
+    margin: 15px auto;
+    border-collapse: collapse;
+    display: none;
+}
+td {
+    text-align: center;
+    border:1px rgb(158, 158, 158) solid;
+    padding: 8px;
+}
+th {
+    text-align: center;
+    border:1px rgb(158, 158, 158) solid;
+    background-color: #673b5d;
+    color: #ffffff;
+    padding: 8px;
+}
+.table {
+    display: none;
+}
+.time {
+    width: 200px;
+}
+</style>
+</head>
+<body style="text-align: center">
+<h1>あやめバス内回り<br>時刻表検索アプリ</h1>
+<div id="div">
+<p>出発するバス停を選んでください</p>
+<select id="departure_stop">
+</select>
+<p>目的地のバス停を選んでください</p>
+<select id="destination_stop">
+</select>
+<p>利用日時を選んでください</p>
+<p>
+    <select onchange="month_change(0)" id="year"></select>年
+    <select onchange="month_change(0)" id="month"></select>月
+    <select id="date"></select>日
+</p>
+<p>
+    <select id="hour"></select>時
+    <select id="minute"></select>分
+</p>
+<label><input type="radio" name="発着" value="出発" checked>出発</label>
+<label><input type="radio" name="発着" value="到着">到着</label>
+<button onclick="get_selectedtime()">検索</button>
+</div>
+<div class="table" id="div_2">
+<p><a id="answer_time"></a>の検索結果</p>
+<table id="target">
+    <tr>
+        <th class="time">停留所</th>
+        <th>時刻</th>
+    </tr>
+    <tr>
+        <td class="time" id="departure_name"></td>
+        <td id="departure_answer"></td>
+    </tr>
+    <tr>
+        <td class="time">↓</td>
+        <td id="waittime"></td>
+    </tr>
+    <tr>
+        <td class="time" id="destination_name"></td>
+        <td id="destination_answer"></td>
+    </tr>
+</table>
+<button onclick="search('出発', answer_departure_hour, answer_departure_minute)">一本後のバス</button>
+<button onclick="search('到着', answer_destination_hour, answer_destination_minute)">一本前のバス</button>
+<button onclick="onemore()">検索画面に戻る</button>
+</div>
+<button onclick="location.href='index.html'">外回り・内回り<br>選択画面に戻る</button>
+</body>
+</html>
